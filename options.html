@@ -39,6 +39,11 @@
                   scope="col" class="i18n-text">
                 replacement referer
               </th>
+			  <th title="Load from file"
+                  id="load-from-file-header"
+                  scope="col">
+                load from file
+              </th>
             </tr>
           </thead>
           <tbody id="hosts">
@@ -158,11 +163,18 @@
                    aria-labelledby="replacement-referer-header"
                    value=""/>
           </div>
-		    <div class="referer-file-container" style="display: inline-flex; align-items: center; gap: 5px; margin-left: 5px;">
+		  <!-- 
+		  <div class="referer-file-container" style="display: inline-flex; align-items: center; gap: 5px; margin-left: 5px;">
 			<input type="file" class="referer-file" accept=".txt" style="display: none;">
 			<button class="load-file browser-style" type="button" title="Загрузить список рефереров из файла">📁</button>
           </div>
+		  -->
         </td>
+		<td>
+		    <div class="referer-file-container browser-style">
+                <input type="file" class="referer-file" accept=".txt" id="referer_input">
+            </div>
+		</td>
         <td class="button_container">
           <button class="delete_row browser-style i18n-text" type="button" title="delete rule description">delete rule</button>
           <button class="up_row browser-style i18n-text" type="button" title="rule up description">rule up</button>

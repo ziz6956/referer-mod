@@ -29,9 +29,11 @@ th:nth-child(4) {
 .button_container > button:hover {
     background-color: revert;
 }
+/*
 input {
     width: calc(100% - 7px);
 }
+*/
 .rule_label {
     vertical-align: baseline;
 }
@@ -56,4 +58,14 @@ button#deactivate {
 }
 button#deactivate.off {
     border: 2px groove green;
+}
+.button_container {
+    display: table-cell;
+    min-width: 180px;        /* 👉 это увеличивает ширину ячейки */
+    white-space: nowrap;     /* 👉 это запрещает перенос кнопок на новую строку */
+    vertical-align: middle;  /* 👉 выравнивание по вертикали */
+}
+td .referer-file-container {
+    min-width: 140px; /* увеличь при необходимости */
+	max-width: 200px;
 }
