@@ -206,15 +206,15 @@ class RefererModEngine
 			originUrl === "" || originUrl === null || originUrl === undefined)
 			? null : new URL(originUrl);
 
-		/* Check if we have a specific rule that matches the
-		 * source/target domain combination, if yes return it. The
-		 * reduce step chooses the best match in case we have multiple
-		 * filter matches, as determined by RuleMatch.better(). */
-		let match = this.#domains
+		/* Add randomness */
+		let matches = this.#domains
 			.map(d => d.match(source, target))
-			.filter(d => d != null)
-			.reduce((acc, current) =>
-				current.better(acc) ? current : acc, null);
+			.filter(d => d != null);
+
+		let match = matches.length > 0
+			? matches[Math.floor(Math.random() * matches.length)]
+			: null;
+
 		if (match != null)
 		{
 			return match.rule;

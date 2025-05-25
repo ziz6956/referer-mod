@@ -49,20 +49,18 @@ function genRefererHeader(value)
 
 function modifyReferer(e)
 {
-	if (!mod_enabled)
-	{
+	if (!mod_enabled) {
 		return {requestHeaders: e.requestHeaders};
 	}
 
 	const conf = engine.findHostConf(e.url, e.originUrl);
+	let refererFound = false;
 
-	for (let i = 0; i < e.requestHeaders.length; i++)
-	{
+	for (let i = 0; i < e.requestHeaders.length; i++) {
 		let header = e.requestHeaders[i];
-		if (header.name.toLowerCase() === "referer")
-		{
-			switch (conf.action)
-			{
+		if (header.name.toLowerCase() === "referer") {
+			refererFound = true;
+			switch (conf.action) {
 				case "prune":
 					header.value = new URL(header.value).origin + "/";
 					break;
@@ -74,26 +72,27 @@ function modifyReferer(e)
 					break;
 				case "remove":
 					e.requestHeaders.splice(i, 1);
+					i--; // shift index as array became shorter
+					refererFound = false; // treat as not found
 					break;
-				/* nothing to do for "keep" */
-				default:
+				// case "keep": do nothing
 			}
-			return {requestHeaders: e.requestHeaders};
 		}
 	}
 
-	/* If we get to this point there was no referer in the request
-	 * headers. */
-	if (conf.action === "target")
-	{
-		e.requestHeaders.push(genRefererHeader(new URL(e.url).origin + "/"));
+	// Add Referer if it was not there or was removed
+	if (!refererFound) {
+		if (conf.action === "target") {
+			e.requestHeaders.push(genRefererHeader(new URL(e.url).origin + "/"));
+		}
+		else if (conf.action === "replace") {
+			e.requestHeaders.push(genRefererHeader(conf.referer));
+		}
 	}
-	else if (conf.action === "replace")
-	{
-		e.requestHeaders.push(genRefererHeader(conf.referer));
-	}
+
 	return {requestHeaders: e.requestHeaders};
 }
+
 
 
 /*
